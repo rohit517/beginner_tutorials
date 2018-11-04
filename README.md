@@ -17,7 +17,7 @@ ROS Kinetic can be installed by following the instructions given [here](http://w
 
 ## Build instructions
 
-We first need to create a catkin workspace. In your directory run the following commands
+We first need to create a catkin workspace. In your directory, run the following commands
 ```
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/
