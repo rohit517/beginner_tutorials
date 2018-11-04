@@ -1,0 +1,4 @@
+string inputString
+---
+bool status
+string outputString
