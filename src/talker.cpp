@@ -55,10 +55,20 @@ std::string publishMessage = "Welcome to ENPM808X ";
  */
 bool updateText(beginner_tutorials::ModifyText::Request& request,
                 beginner_tutorials::ModifyText::Response& response) {
-  publishMessage = request.inputString;
-  response.outputString = "String modified to: " + publishMessage;
-  response.status = true;
-  ROS_WARN_STREAM("Output string updated");
+
+  if (!request.inputString.empty()) {
+    publishMessage = request.inputString;
+    response.outputString = "String modified to: " + publishMessage;
+    response.status = true;
+    ROS_WARN_STREAM("Output string updated.");
+  }
+  else {
+    response.status = false;
+    response.outputString = publishMessage;
+    ROS_ERROR_STREAM(
+        "Output string to be updated cannot be empty. String will not be updated.");
+  }
+
   return true;
 }
 
@@ -77,6 +87,7 @@ int main(int argc, char **argv) {
    * part of the ROS system.
    */
   ros::init(argc, argv, "talker");
+  ROS_DEBUG_STREAM("Starting Talker node");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
@@ -84,6 +95,9 @@ int main(int argc, char **argv) {
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
+
+  // Default frequency value
+  int frequency = 10;
 
   /**
    * The advertise() function is how you tell ROS that you want to
@@ -104,9 +118,33 @@ int main(int argc, char **argv) {
    */
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
+  // Service for ModifyText
   ros::ServiceServer service = n.advertiseService("ModifyText", updateText);
 
-  ros::Rate loop_rate(1);
+  // Check and set publish frequency
+  if (argc == 2) {
+    int freqArg = atoi(argv[1]);
+    if (freqArg > 0) {
+      // Set frequency to value of argument
+      frequency = atoi(argv[1]);
+      ROS_INFO("Publish frequency set to %d Hz.", frequency);
+    }
+    else if (freqArg == 0) {
+      ROS_WARN("Publish frequency set to default value of %d Hz.",
+                      frequency);
+    }
+    else {
+      ROS_FATAL("Cannot start talker node with negative frequency of %d Hz.",
+          frequency);
+      return -1;
+    }
+  }
+  else {
+    ROS_INFO("NO arguments received. Publish frequency set to %d Hz.",
+             frequency);
+  }
+
+  ros::Rate loop_rate(frequency);
 
   /**
    * A count of how many messages we have sent. This is used to create
