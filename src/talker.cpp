@@ -32,7 +32,7 @@ SOFTWARE.
  *
  *  @section DESCRIPTION
  *
- *  Source file to implement publisher node. 
+ *  Source file to implement publisher node.
  *
  */
 
@@ -42,6 +42,25 @@ SOFTWARE.
 // ROS header
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/ModifyText.h"
+
+// String message to publish
+std::string publishMessage = "Welcome to ENPM808X ";
+
+/**
+ * @brief  Function to update text for ModifyText service
+ * @param  request    Request data sent to service
+ * @param  response   Response data by the service
+ * @return bool
+ */
+bool updateText(beginner_tutorials::ModifyText::Request& request,
+                beginner_tutorials::ModifyText::Response& response) {
+  publishMessage = request.inputString;
+  response.outputString = "String modified to: " + publishMessage;
+  response.status = true;
+  ROS_WARN_STREAM("Output string updated");
+  return true;
+}
 
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
@@ -85,7 +104,9 @@ int main(int argc, char **argv) {
    */
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
-  ros::Rate loop_rate(10);
+  ros::ServiceServer service = n.advertiseService("ModifyText", updateText);
+
+  ros::Rate loop_rate(1);
 
   /**
    * A count of how many messages we have sent. This is used to create
@@ -99,7 +120,7 @@ int main(int argc, char **argv) {
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "Welcome to ENPM808X " << count;
+    ss << publishMessage << " " << count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
