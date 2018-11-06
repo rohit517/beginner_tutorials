@@ -86,8 +86,8 @@ int main(int argc, char **argv) {
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
+
   ros::init(argc, argv, "talker");
-  ROS_DEBUG_STREAM("Starting Talker node");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
@@ -95,6 +95,9 @@ int main(int argc, char **argv) {
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
+
+  ros::Duration(2).sleep();  // sleep for half a second for launch
+  ROS_DEBUG_STREAM("Starting Talker node");
 
   // Default frequency value
   int frequency = 10;
