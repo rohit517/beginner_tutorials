@@ -35,7 +35,7 @@ cd ..
 catkin_make
 ```
 
-## Demo
+## Demo using rosrun 
 
 Run the following commands in the terminal opened in your catkin workspace. First we need to start roscore. If you already have
 roscore running, you may skip this command.
@@ -53,14 +53,6 @@ The output on the terminal will be similar to
 ```
 [ INFO] [1540878831.864738212]: Welcome to ENPM808X 0
 [ INFO] [1540878831.964824548]: Welcome to ENPM808X 1
-[ INFO] [1540878832.064775503]: Welcome to ENPM808X 2
-[ INFO] [1540878832.164805350]: Welcome to ENPM808X 3
-[ INFO] [1540878832.264797381]: Welcome to ENPM808X 4
-[ INFO] [1540878832.364780430]: Welcome to ENPM808X 5
-[ INFO] [1540878832.464758091]: Welcome to ENPM808X 6
-[ INFO] [1540878832.564772969]: Welcome to ENPM808X 7
-[ INFO] [1540878832.664750234]: Welcome to ENPM808X 8
-[ INFO] [1540878832.764749461]: Welcome to ENPM808X 9
 ```
 
 To launch the subscriber node, open a new terminal in your catkin workspace and run the following commands
@@ -71,20 +63,58 @@ rosrun beginner_tutorials listener
 
 The output on the terminal will be similar to 
 ```
-[ INFO] [1540878910.158962521]: I heard: [Welcome to ENPM808X 3]
-[ INFO] [1540878910.258683733]: I heard: [Welcome to ENPM808X 4]
-[ INFO] [1540878910.358709019]: I heard: [Welcome to ENPM808X 5]
-[ INFO] [1540878910.458697160]: I heard: [Welcome to ENPM808X 6]
-[ INFO] [1540878910.558673154]: I heard: [Welcome to ENPM808X 7]
-[ INFO] [1540878910.658629519]: I heard: [Welcome to ENPM808X 8]
-[ INFO] [1540878910.758689818]: I heard: [Welcome to ENPM808X 9]
-[ INFO] [1540878910.858700028]: I heard: [Welcome to ENPM808X 10]
-[ INFO] [1540878910.958850812]: I heard: [Welcome to ENPM808X 11]
-[ INFO] [1540878911.058708591]: I heard: [Welcome to ENPM808X 12]
-```
+[ INFO] [1540878910.158962521]: I heard: [Welcome to ENPM808X 0]
+[ INFO] [1540878910.258683733]: I heard: [Welcome to ENPM808X 1]
 
+```
 To close the nodes, press CTRL+C in the terminal.
 
+
+## Run demo using launch file
+
+To run the demo using the launch file, open a terminal and run the following commands. This will start the talker and listener node with the talker node publishing at 10Hz by default.
+```
+cd catkin_ws
+source devel/setup.bash
+roslaunch beginner_tutorials beginner_tutorial.launch
+```
+
+Alternatively, you can launch the nodes by specifying the frequency as follows.
+```
+roslaunch beginner_tutorials beginner_tutorial.launch frequency:=5
+```
+Here we pass the frequency as 5Hz. Setting the value to a negative number will not start the nodes and a zero value will start the nodes at default frequency of 10Hz. 
+
+
+## Changing output text using service
+
+Once you start the nodes using the launch file as shown above, we can update the string being published by the ModifyText service. To check if the service is running, run the following command. 
+```
+rosservice list
+```
+
+You should see the following output. /ModifyText is the sevice we need to call to update the text.
+```
+/ModifyText
+/listener/get_loggers
+/listener/set_logger_level
+/rosout/get_loggers
+/rosout/set_logger_level
+/talker_node/get_loggers
+/talker_node/set_logger_level
+```
+
+Run the following command to change the output text. Here we update the text to 'Updated Message' which can be seen on the listener terminal. Note that an empty string will raise an error and will not update the string.
+```
+rosservice call /ModifyText "Updated Message"
+```
+
+## Logging
+
+To see the output in rqt_console, run the following command. We can filter output based on the logger level.
+```
+rosrun rqt_console rqt_console
+```
 
 ## License
 ```
