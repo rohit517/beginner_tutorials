@@ -45,36 +45,34 @@ SOFTWARE.
 #include "beginner_tutorials/ModifyText.h"
 
 // String message to publish
-std::string publishMessage = "Welcome to ENPM808X ";
+extern std::string publishMessage = "Welcome to ENPM808X ";
 
 /**
  * @brief  Function to update text for ModifyText service
+ *
  * @param  request    Request data sent to service
  * @param  response   Response data by the service
+ *
  * @return bool
  */
 bool updateText(beginner_tutorials::ModifyText::Request& request,
                 beginner_tutorials::ModifyText::Response& response) {
-
   if (!request.inputString.empty()) {
     publishMessage = request.inputString;
     response.outputString = "String modified to: " + publishMessage;
     response.status = true;
     ROS_WARN_STREAM("Output string updated.");
-  }
-  else {
+  } else {
     response.status = false;
     response.outputString = publishMessage;
     ROS_ERROR_STREAM(
-        "Output string to be updated cannot be empty. String will not be updated.");
+        "Output string to be updated cannot be empty. "
+                     "String will not be updated.");
   }
 
   return true;
 }
 
-/**
- * This tutorial demonstrates simple sending of messages over the ROS system.
- */
 int main(int argc, char **argv) {
   /**
    * The ros::init() function needs to see argc and argv so that it can perform
@@ -131,18 +129,15 @@ int main(int argc, char **argv) {
       // Set frequency to value of argument
       frequency = atoi(argv[1]);
       ROS_INFO("Publish frequency set to %d Hz.", frequency);
-    }
-    else if (freqArg == 0) {
+    } else if (freqArg == 0) {
       ROS_WARN("Publish frequency set to default value of %d Hz.",
                       frequency);
-    }
-    else {
+    } else {
       ROS_FATAL("Cannot start talker node with negative frequency of %d Hz.",
           frequency);
       return -1;
     }
-  }
-  else {
+  } else {
     ROS_INFO("NO arguments received. Publish frequency set to %d Hz.",
              frequency);
   }
@@ -179,7 +174,5 @@ int main(int argc, char **argv) {
     loop_rate.sleep();
     ++count;
   }
-
-
   return 0;
 }

@@ -32,7 +32,7 @@ SOFTWARE.
  *
  *  @section DESCRIPTION
  *
- *  Source file to implement subscriber node. 
+ *  Source file to implement subscriber node.
  *
  */
 
@@ -41,7 +41,9 @@ SOFTWARE.
 #include "std_msgs/String.h"
 
 /**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
+ * @brief  Callback function to print message sent from talker node
+ *
+ * @param  msg  Message recieved by listener node
  */
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
   ROS_INFO("I heard: [%s]", msg->data.c_str());
