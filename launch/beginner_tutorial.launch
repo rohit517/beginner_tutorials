@@ -1,6 +1,11 @@
 <launch>
   <arg name="frequency" default = "10" /> 
 
+  <env
+    name="ROSCONSOLE_CONFIG_FILE"
+    value="$(find beginner_tutorials)/config/launch_loggerlevel.conf"
+  />
+
   <node
     pkg = "beginner_tutorials"
     name = "talker_node"
