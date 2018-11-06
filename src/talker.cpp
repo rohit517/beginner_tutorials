@@ -36,17 +36,9 @@ SOFTWARE.
  *
  */
 
-// C++ header
-#include <sstream>
+#include "talker.hpp"
 
-// ROS header
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "beginner_tutorials/ModifyText.h"
-
-// String message to publish
-extern std::string publishMessage = "Welcome to ENPM808X ";
-
+stringVar stringMessage;
 /**
  * @brief  Function to update text for ModifyText service
  *
@@ -58,13 +50,14 @@ extern std::string publishMessage = "Welcome to ENPM808X ";
 bool updateText(beginner_tutorials::ModifyText::Request& request,
                 beginner_tutorials::ModifyText::Response& response) {
   if (!request.inputString.empty()) {
-    publishMessage = request.inputString;
-    response.outputString = "String modified to: " + publishMessage;
+    stringMessage.publishMessage = request.inputString;
+    response.outputString = "String modified to: "
+        + stringMessage.publishMessage;
     response.status = true;
     ROS_WARN_STREAM("Output string updated.");
   } else {
     response.status = false;
-    response.outputString = publishMessage;
+    response.outputString = stringMessage.publishMessage;
     ROS_ERROR_STREAM(
         "Output string to be updated cannot be empty. "
                      "String will not be updated.");
@@ -156,7 +149,7 @@ int main(int argc, char **argv) {
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << publishMessage << " " << count;
+    ss << stringMessage.publishMessage << " " << count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());

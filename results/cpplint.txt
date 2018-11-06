@@ -1,6 +1,8 @@
-./src/talker.cpp:58:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::ModifyText::Request& request  [runtime/references] [2]
-./src/talker.cpp:59:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::ModifyText::Response& response  [runtime/references] [2]
+Done processing ./include/talker.hpp
+./src/talker.cpp:50:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::ModifyText::Request& request  [runtime/references] [2]
+./src/talker.cpp:51:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::ModifyText::Response& response  [runtime/references] [2]
 Done processing ./src/talker.cpp
 Done processing ./src/listener.cpp
 Total errors found: 2
+
 
