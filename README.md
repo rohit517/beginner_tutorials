@@ -30,7 +30,7 @@ source devel/setup.bash
 We now clone the beginner_tutorials package in the src folder and build the package.
 ```
 cd src/
-git clone --recursive https://github.com/rohit517/beginner_tutorials.git
+git clone --single-branch -b Week10_HW https://github.com/rohit517/beginner_tutorials.git
 cd ..
 catkin_make
 ```
@@ -83,7 +83,7 @@ Alternatively, you can launch the nodes by specifying the frequency as follows.
 ```
 roslaunch beginner_tutorials beginner_tutorial.launch frequency:=5
 ```
-Here we pass the frequency as 5Hz. Setting the value to a negative number will not start the nodes and a zero value will start the nodes at default frequency of 10Hz. 
+Here we pass the frequency as 5Hz. Setting the value to a negative number will not start the nodes and a zero value will start the nodes at default frequency of 10Hz. To close the nodes, press CTRL+C in the terminal.
 
 
 ## Changing output text using service
