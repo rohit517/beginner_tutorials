@@ -1,6 +1,11 @@
 <launch>
   <arg name="frequency" default = "10" /> 
 
+  <arg 
+    name="record" 
+    default = "false"
+  />
+
   <env
     name="ROSCONSOLE_CONFIG_FILE"
     value="$(find beginner_tutorials)/config/launch_loggerlevel.conf"
@@ -20,6 +25,14 @@
     type = "listener"
     output = "screen"
     launch-prefix="gnome-terminal --command"
+  />
+
+  <node
+    pkg="rosbag"
+    name="record"
+    type="record"
+    args="-a -O $(find beginner_tutorials)/results/talker.bag"
+    if = "$(arg record)"
   />
 
 </launch>
