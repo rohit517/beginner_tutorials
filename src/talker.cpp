@@ -93,6 +93,19 @@ int main(int argc, char **argv) {
   // Default frequency value
   int frequency = 10;
 
+  // Create a TransformBroadcaster object
+  static tf::TransformBroadcaster br;
+
+  // Create a transform object
+  tf::Transform transform;
+
+  // Create a quaternion for the transform
+  tf::Quaternion q;
+
+  // Set params for moving transform
+  double amplitude = 2.0;
+
+
   /**
    * The advertise() function is how you tell ROS that you want to
    * publish on a given topic name. This invokes a call to the ROS
@@ -161,6 +174,28 @@ int main(int argc, char **argv) {
      * in the constructor above.
      */
     chatter_pub.publish(msg);
+
+    // TF related operations
+
+    // Get the time in seconds
+    double secs = ros::Time::now().toSec();
+
+    double x = amplitude * cos(2 * 3.14 * secs);
+    double y = 3.0;
+    double z = 0.0;
+
+    double zrot = 0.5 * 3.14 * secs;
+
+    // Set position of transform
+    transform.setOrigin(tf::Vector3(x, y, z));
+    q.setRPY(0, 0, zrot);
+
+    // Set the rotation
+    transform.setRotation(q);
+
+    // Send the transform
+    br.sendTransform(
+        tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
 
     ros::spinOnce();
 

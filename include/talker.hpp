@@ -47,6 +47,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/ModifyText.h"
+#include <tf/transform_broadcaster.h>
 
 // Struct for global string
 struct stringVar {
