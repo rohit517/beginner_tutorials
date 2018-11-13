@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  *  @file    listener.cpp
- *  @author  Rohitkrishna Nambiar (rohith517)
+ *  @author  Rohitkrishna Nambiar (rohit517)
  *  @date    10/28/2018
  *  @version 1.0
  *

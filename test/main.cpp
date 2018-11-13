@@ -23,35 +23,32 @@
  */
 
 /**
- *  @file    talker.hpp
+ *  @file    main.cpp
  *  @author  Rohitkrishna Nambiar (rohit517)
- *  @date    10/28/2018
+ *  @date    11/13/2018
  *  @version 1.0
  *
- *  @brief ROS Beginner tutorials
+ *  @brief Talker node rostest
  *
  *  @section DESCRIPTION
  *
- *  Talker header file to implement publisher node.
+ *  Main file to run tests for talker node
  *
  */
 
-#ifndef INCLUDE_TALKER_HPP_
-#define INCLUDE_TALKER_HPP_
+#include <ros/ros.h>
+#include <gtest/gtest.h>
 
-// C++ header
-#include <sstream>
-#include <string>
-
-// ROS header
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "beginner_tutorials/ModifyText.h"
-#include <tf/transform_broadcaster.h>
-
-// Struct for global string
-struct stringVar {
-  std::string publishMessage = "Welcome to ENPM808X ";
-};
-
-#endif  // INCLUDE_TALKER_HPP_
+/**
+ * @brief Run all tests
+ *
+ * @param argc Argument count
+ * @param argv Argument values
+ *
+ * @return 0 on successful execution
+ */
+int main(int argc, char **argv) {
+  ros::init(argc, argv, "talkerTest");
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
