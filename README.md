@@ -30,7 +30,7 @@ source devel/setup.bash
 We now clone the beginner_tutorials package in the src folder and build the package.
 ```
 cd src/
-git clone --single-branch -b Week10_HW https://github.com/rohit517/beginner_tutorials.git
+git clone --single-branch -b Week11_HW https://github.com/rohit517/beginner_tutorials.git
 cd ..
 catkin_make
 ```
@@ -115,6 +115,130 @@ To see the output in rqt_console, run the following command. We can filter outpu
 ```
 rosrun rqt_console rqt_console
 ```
+
+## Inspecting TF Frames
+
+The talker node broadcasts a tf frame named /talk with parent as /world. This frame has a non-zero translation and rotation with respect to the world frame. This can be verified using tf_echo and rqt_tf_tree. 
+
+To use tf_echo, start roscore and the talker node and run the following command in terminal
+```
+rosrun tf tf_echo /world /talk
+```
+A sample output can be seen below. The translation and rotation change with time. 
+```
+At time 1542141785.075
+- Translation: [1.696, 3.000, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.656, 0.755]
+            in RPY (radian) [0.000, -0.000, 1.431]
+            in RPY (degree) [0.000, -0.000, 82.001]
+At time 1542141785.775
+- Translation: [-1.535, 3.000, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.954, 0.301]
+            in RPY (radian) [0.000, -0.000, 2.530]
+            in RPY (degree) [0.000, -0.000, 144.969]
+At time 1542141786.775
+```
+
+While this is running, we can use rqt_tf_tree to visualize the tree of frames. Run the following command to visualize rqt_tf_tree
+```
+rosrun rqt_tf_tree rqt_tf_tree
+```
+This visualization can be saved to a pdf by running the following command. To visualize the frames, one can also use rviz. The programs can be stopped by pressing Ctrl+C in terminal. 
+```
+rosrun tf view_frames
+```
+
+## ROSTEST
+
+The tests for talker node are written in gtest and rostest. To build the tests, run the following commands
+```
+cd ~/catkin_ws
+source devel/setup.bash
+catkin_make run_tests_beginner_tutorials
+```
+
+The tests can be run by the entering the following commands in the same terminal without change of path. Note that the launch file also brings up and tests the talker node.
+```
+rostest beginner_tutorials talkerTest.launch
+```
+A sample output can be seen below
+```
+... logging to /home/rohit/.ros/log/rostest-rohit-Alienware-17-R4-8930.log
+[ROSUNIT] Outputting test results to /home/rohit/.ros/test_results/beginner_tutorials/rostest-test_talkerTest.xml
+[Testcase: testtalkerTest] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[beginner_tutorials.rosunit-talkerTest/testModifyTextServiceInit][passed]
+[beginner_tutorials.rosunit-talkerTest/testModifyTextServiceCall][passed]
+
+SUMMARY
+ * RESULT: SUCCESS
+ * TESTS: 2
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/rohit/.ros/log/rostest-rohit-Alienware-17-R4-8930.log
+```
+## Recording bag file with launch file
+
+The launch file is updated to add a node for rosbag to record all the topics being published into the results folder. File named talker.bag can be found inside the results folder with a ~15 sec recording. 
+
+To record using rosbag, first we need to start roscore if not already running
+```
+roscore
+```
+Once roscore is running, open a new terminal and enter the following commands to launch the beginner_tutorial.launch file. The argument record is used to choose whether to record a bagfile or not. Default is false (record:=false). 
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch beginner_tutorials beginner_tutorial.launch record:=true
+```
+This will record all the topics and store the bag file in the results folder. 
+
+### Inspect bag file
+To inspect the bagfile created in the above step run the following commands
+```
+cd ~/catkin_ws/src/beginner_tutorials/results
+rosbag info talker.bag
+```
+A sample output can be seen below
+```
+path:        talker.bag
+version:     2.0
+duration:    17.4s
+start:       Nov 13 2018 14:19:12.73 (1542136752.73)
+end:         Nov 13 2018 14:19:30.11 (1542136770.11)
+size:        197.4 KB
+messages:    930
+compression: none [1/1 chunks]
+types:       rosgraph_msgs/Log  [acffd30cd6b6de30f120938c17c593fb]
+             std_msgs/String    [992ce8a1687cec8c8bd883ec73ca41d1]
+             tf2_msgs/TFMessage [94810edda583a504dfda3829e70d7eec]
+topics:      /chatter      153 msgs    : std_msgs/String   
+             /rosout       313 msgs    : rosgraph_msgs/Log  (3 connections)
+             /rosout_agg   311 msgs    : rosgraph_msgs/Log 
+             /tf           153 msgs    : tf2_msgs/TFMessage
+```
+
+### Play bag file with listener node
+The rosbag generated, can be played with the listener node running. We can see the output in the terminal where listener node is running once we start the rosbag. Follow the steps below. 
+Start roscore if already not running
+```
+roscore
+```
+Open a new terminal where we start the listener node
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rosrun beginner_tutorials listener
+```
+Next, play the rosbag file.
+```
+cd ~/catkin_ws/src/beginner_tutorials/results
+rosbag play talker.bag
+```
+We can see the output on the listener node that are recorded in the bagfile.
 
 ## License
 ```
