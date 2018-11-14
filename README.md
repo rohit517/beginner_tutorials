@@ -157,8 +157,10 @@ source devel/setup.bash
 catkin_make run_tests_beginner_tutorials
 ```
 
-The tests can be run by the entering the following commands in the same terminal without change of path. Note that the launch file also brings up and tests the talker node.
+The tests can be run by the entering the following commands in the terminal
 ```
+cd ~/catkin_ws
+source devel/setup.bash
 rostest beginner_tutorials talkerTest.launch
 ```
 A sample output can be seen below
