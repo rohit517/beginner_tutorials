@@ -196,7 +196,7 @@ cd ~/catkin_ws
 source devel/setup.bash
 roslaunch beginner_tutorials beginner_tutorial.launch record:=true
 ```
-This will record all the topics and store the bag file in the results folder. 
+This will record all the topics and store the bag file in the results folder. Press Ctrl+C to stop recording. 
 
 ### Inspect bag file
 To inspect the bagfile created in the above step run the following commands
